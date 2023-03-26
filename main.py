@@ -2,7 +2,9 @@ import os
 import random
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.models import load_model
 
+data_dir = "E:\Study\MLOps\LABS\MLops_Novikova"
 # установить путь к директории с тренировочными и валидационными данными
 train_dir = "train"
 validation_dir = "valid"
@@ -37,26 +39,29 @@ validation_generator = validation_datagen.flow_from_directory(validation_dir,
                                                               class_mode='categorical')
 
 # создать модель нейронной сети
-model = tf.keras.Sequential([
-    tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape),
-    tf.keras.layers.MaxPooling2D((2, 2)),
-    tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
-    tf.keras.layers.MaxPooling2D((2, 2)),
-    tf.keras.layers.Conv2D(128, (3, 3), activation='relu'),
-    tf.keras.layers.MaxPooling2D((2, 2)),
-    tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dropout(0.5),
-    tf.keras.layers.Dense(num_classes, activation='softmax')
+if os.path.isfile('animal_classifier.h5'):
+    model = load_model('animal_classifier.h5')
+else:
+    model = tf.keras.Sequential([
+        tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+        tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+        tf.keras.layers.Conv2D(128, (3, 3), activation='relu'),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+        tf.keras.layers.Flatten(),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dense(num_classes, activation='softmax')
 ])
 
 # скомпилировать модель с функцией потерь, оптимизатором и метриками
-model.compile(loss='categorical_crossentropy',
-              optimizer='adam',
-              metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
 
 # обучить модель
-epochs = 10
+epochs = 5
 steps_per_epoch = train_generator.n // train_generator.batch_size
 validation_steps = validation_generator.n // validation_generator.batch_size
 
@@ -78,3 +83,15 @@ for epoch in range(epochs):
     validation_loss /= validation_steps
     validation_acc /= validation_steps
     print(f"validation loss: {validation_loss:.4f}, validation acc: {validation_acc:.4f}")
+
+
+model.save('animal_classifier.h5')
+
+test_dir = os.path.join(data_dir, "test")
+test_datagen = ImageDataGenerator(rescale=1./255)
+test_generator = test_datagen.flow_from_directory(test_dir,
+                                                  target_size=input_shape[:2],
+                                                  batch_size=32,
+                                                  class_mode='categorical')
+test_loss, test_acc = model.evaluate(test_generator, verbose=0)
+print(f"test loss: {test_loss:.4f}, test acc: {test_acc:.4f}")
