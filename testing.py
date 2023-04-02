@@ -10,7 +10,7 @@ model = load_model('animal_classifier.h5')
 class_names = os.listdir('train')
 
 # загрузить изображение и привести его к нужному размеру
-img_path = 'E:\Study\MLOps\LABS\MLops_Novikova\\test\\c6.jpg'
+img_path = 'E:\Study\MLOps\LABS\MLops_Novikova\\test\\c1.jpg'
 img = load_img(img_path, target_size=(224, 224))
 img_array = img_to_array(img)
 img_array = np.expand_dims(img_array, axis=0)
