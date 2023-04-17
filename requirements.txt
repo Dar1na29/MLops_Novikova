@@ -1,1 +1,5 @@
 tensorflow~=2.12.0
+numpy~=1.23.5
+pandas~=1.5.3
+dvc~=2.53.0
+joblib~=1.2.0

@@ -1,0 +1,18 @@
+stages:
+
+  preprocess_data:
+    cmd: python load_data.py
+    deps:
+    - train/
+    - valid/
+    outs:
+    - data/train.pkl
+    - data/valid.pkl
+
+  train_model:
+    cmd: python train_dvc.py
+    deps:
+    - data/train.pkl
+    - data/valid.pkl
+    outs:
+    - model.h5

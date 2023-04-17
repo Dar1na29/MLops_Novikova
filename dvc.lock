@@ -1,0 +1,35 @@
+schema: '2.0'
+stages:
+  preprocess_data:
+    cmd: python load_data.py
+    deps:
+    - path: train/
+      md5: d041f76c04b36c3226e218398d6d390b.dir
+      size: 2757203940
+      nfiles: 13344
+    - path: valid/
+      md5: 06549434b5d83bc25343da12b3841f7c.dir
+      size: 606411313
+      nfiles: 3000
+    outs:
+    - path: data/train.pkl
+      md5: 231c44dfa081a58542fe7b818f552179
+      size: 8035277467
+    - path: data/valid.pkl
+      md5: 222a97a7c714cb50e43f89d829164247
+      size: 1806492132
+  train_model:
+    cmd: python main.py
+    deps:
+    - path: data/train
+      md5: d041f76c04b36c3226e218398d6d390b.dir
+      size: 2757203940
+      nfiles: 13344
+    - path: data/valid
+      md5: 06549434b5d83bc25343da12b3841f7c.dir
+      size: 606411313
+      nfiles: 3000
+    outs:
+    - path: model.h5
+      md5: f71c41d872f6390f791329052c43b097
+      size: 134084960
