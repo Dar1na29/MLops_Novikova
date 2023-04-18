@@ -5,6 +5,11 @@ import tensorflow as tf
 
 # Define command line arguments
 parser = argparse.ArgumentParser(description='Train a model.')
+
+parser.add_argument('--layer1_size', type=int, default=64,
+                    help='Size of the first hidden layer')
+parser.add_argument('--layer2_size', type=int, default=32,
+                    help='Size of the second hidden layer')
 parser.add_argument('--train_data', type=str, default='data/train.pkl',
                     help='Path to the training data')
 parser.add_argument('--valid_data', type=str, default='data/valid.pkl',
@@ -23,8 +28,8 @@ with open(args.valid_data, 'rb') as f:
 
 # Define the model architecture
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Dense(64, activation='relu', input_shape=(train_data['inputs'].shape[1],)),
-    tf.keras.layers.Dense(32, activation='relu'),
+    tf.keras.layers.Dense(args.layer1_size, activation='relu', input_shape=(train_data['inputs'].shape[1],)),
+    tf.keras.layers.Dense(args.layer2_size, activation='relu'),
     tf.keras.layers.Dense(1)
 ])
 
