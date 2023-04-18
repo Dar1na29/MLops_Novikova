@@ -29,7 +29,11 @@ stages:
       md5: 06549434b5d83bc25343da12b3841f7c.dir
       size: 606411313
       nfiles: 3000
+    params:
+      params.yaml:
+        layer1_size: 64
+        layer2_size: 32
     outs:
     - path: model.h5
-      md5: f71c41d872f6390f791329052c43b097
+      md5: dd0dd31fdc7b0404334314d0eaa25f03
       size: 134084960
