@@ -1,0 +1,12 @@
+dvc init
+dvc remote add MLops_Novikova https://github.com/Dar1na29/MLops_Novikova.git
+dvc add valid
+dvc add train
+git add valid.dvc train.dvc
+git commit -m "Add valid and train data DVC files"
+dvc push
+git add .
+git commit -m "Add valid and train data and DVC files"
+git push
+
+
