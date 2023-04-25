@@ -10,6 +10,9 @@ stages:
     - data/valid.pkl
 
   train_model:
+    params:
+      - layer1_size
+      - layer2_size
     cmd: python train_dvc.py
     deps:
     - data/train.pkl
